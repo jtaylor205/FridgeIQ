@@ -1,0 +1,105 @@
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.card:hover {
+  border-color: var(--color-green);
+  transform: translateY(-2px);
+}
+
+.expired {
+  border-color: var(--color-danger);
+  opacity: 0.8;
+}
+
+.imageWrapper {
+  position: relative;
+  height: 140px;
+  background-color: var(--color-surface-2);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+}
+
+.ownerBadge,
+.expiryBadge {
+  font-size: 0.7rem;
+}
+
+.info {
+  padding: 12px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.meta {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.expiry {
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+
+.expiry.expired { color: var(--color-danger); }
+.expiry.today   { color: var(--color-danger); }
+.expiry.tomorrow { color: var(--color-warning); }
+.expiry.soon    { color: var(--color-warning); }
+.expiry.ok      { color: var(--color-text-muted); }
+
+.actions {
+  padding: 8px 12px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.useBtn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.useBtn:hover {
+  border-color: var(--color-green);
+  color: var(--color-green-light);
+}
