@@ -1,0 +1,130 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 200px;
+  color: var(--color-text-muted);
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+.empty p {
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+
+.empty span {
+  font-size: 0.78rem;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.identified h3 {
+  font-size: 1.2rem;
+  margin-top: 6px;
+}
+
+.brand {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.expiry {
+  background-color: rgba(224, 154, 53, 0.1);
+  border: 1px solid rgba(224, 154, 53, 0.3);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expiry label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-warning);
+}
+
+.expiry span {
+  font-size: 0.9rem;
+}
+
+.nutrition h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.macros {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.macro {
+  text-align: center;
+  background-color: var(--color-surface-2);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  flex: 1;
+}
+
+.macro span {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-green-light);
+}
+
+.macro label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+  padding: 8px 4px;
+  color: var(--color-text-muted);
+}
+
+.table td:last-child {
+  text-align: right;
+  color: var(--color-text);
+}
+
+.vitamins {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vitamins label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.vitamins span {
+  font-size: 0.85rem;
+}

@@ -1,0 +1,23 @@
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.headerRow h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.sub {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--color-text-muted);
+}

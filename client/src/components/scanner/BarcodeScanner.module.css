@@ -1,0 +1,73 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cameraPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 180px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  background-color: var(--color-surface-2);
+}
+
+.cameraIcon {
+  font-size: 2.5rem;
+}
+
+.cameraPlaceholder p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.cameraPlaceholder span {
+  font-size: 0.78rem;
+}
+
+.manualFallback {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.orDivider {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  flex: 1;
+  background-color: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-green);
+}
+
+.error {
+  font-size: 0.85rem;
+  color: var(--color-danger);
+}
+
+.results {
+  margin-top: 4px;
+}
