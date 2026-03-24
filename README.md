@@ -7,10 +7,10 @@ FridgeIQ is a MERN stack web app that lets users track their fridge contents, mo
 | Name | Role |
 |------|------|
 | Lucas Mach | Team Captain |
-| Jaedon Taylor | Frontend / Skeleton |
-| Eric Wang | |
-| Taebok Joseph Kim | |
-| Pablo Sabogal | |
+| Jaedon Taylor | Full-Stack |
+| Eric Wang | Full-Stack |
+| Taebok Joseph Kim | Full-Stack |
+| Pablo Sabogal | Full-Stack |
 
 ---
 
