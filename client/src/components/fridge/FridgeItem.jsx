@@ -1,51 +1,45 @@
 import { expirationStatus, expirationLabel } from '../../utils/dateHelpers';
-import styles from './FridgeItem.module.css';
 
 export default function FridgeItem({ item, onClick }) {
   const status = expirationStatus(item.expirationDate);
 
   return (
-    <div className={`${styles.card} ${status === 'expired' ? styles.expired : ''}`} onClick={onClick}>
-      <div className={styles.imageWrapper}>
+    <div
+      className={`fridge-card${status === 'expired' ? ' fridge-card-expired' : ''}`}
+      onClick={onClick}
+    >
+      <div className="fridge-image-wrap">
         {item.imageUrl ? (
-          <img src={item.imageUrl} alt={item.name} className={styles.image} />
+          <img src={item.imageUrl} alt={item.name} className="fridge-image" />
         ) : (
-          <div className={styles.imagePlaceholder}>{item.name[0]}</div>
+          <div className="fridge-placeholder">{item.name[0]}</div>
         )}
-        <div className={styles.badges}>
-          {item.addedBy?.name && (
-            <span className={`badge badge-green ${styles.ownerBadge}`}>{item.addedBy.name}</span>
+        <div className="fridge-badges">
+          {(status === 'expired' || status === 'today') && (
+            <span className="badge badge-red">Expires soon</span>
           )}
-          {(status === 'expired' || status === 'today' || status === 'tomorrow') && (
-            <span className={`badge badge-red ${styles.expiryBadge}`}>SOON</span>
+          {status === 'tomorrow' && (
+            <span className="badge badge-amber">Tomorrow</span>
+          )}
+          {item.isShared && (
+            <span className="badge badge-neutral">Shared</span>
           )}
         </div>
       </div>
 
-      <div className={styles.info}>
-        <div className={styles.name}>{item.name}</div>
+      <div className="fridge-info">
+        <div className="fridge-name">{item.name}</div>
         {item.quantity && (
-          <div className={styles.meta}>
+          <div className="fridge-meta">
             {item.quantity.amount} {item.quantity.unit}
+            {item.nutrition?.calories ? ` · ${item.nutrition.calories} kcal` : ''}
           </div>
         )}
-        {item.nutrition?.calories && (
-          <div className={styles.meta}>{item.nutrition.calories} kcal</div>
-        )}
         {item.expirationDate && (
-          <div className={`${styles.expiry} ${styles[status]}`}>
+          <div className={`fridge-expiry fridge-expiry-${status}`}>
             {expirationLabel(item.expirationDate)}
           </div>
         )}
-        {item.nutrition?.vitamins?.length > 0 && (
-          <div className={styles.meta}>{item.nutrition.vitamins.join(', ')}</div>
-        )}
-      </div>
-
-      <div className={styles.actions}>
-        <button className={styles.useBtn} onClick={(e) => { e.stopPropagation(); }}>
-          Use
-        </button>
       </div>
     </div>
   );

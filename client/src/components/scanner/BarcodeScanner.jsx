@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { barcodeService } from '../../services/barcodeService';
 import ScanResults from './ScanResults';
-import styles from './BarcodeScanner.module.css';
 
 // TODO: replace camera placeholder with live scanning via @zxing/browser
 
@@ -27,32 +26,36 @@ export default function BarcodeScanner({ onAddToFridge }) {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.cameraPlaceholder}>
-        {/* TODO: Replace with live camera feed using @zxing/browser */}
-        <div className={styles.cameraIcon}>📷</div>
+    <div className="barcode-wrapper">
+      <div className="barcode-camera">
+        <div className="barcode-camera-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+          </svg>
+        </div>
         <p>Camera barcode scanning</p>
-        <span>Coming soon — connect webcam via @zxing/browser</span>
+        <span>Coming soon — live webcam via @zxing/browser</span>
       </div>
 
-      <div className={styles.manualFallback}>
-        <p className={styles.orDivider}>or enter barcode manually</p>
-        <form onSubmit={handleLookup} className={styles.form}>
+      <div className="barcode-manual">
+        <p className="barcode-or-divider">or enter barcode manually</p>
+        <form onSubmit={handleLookup} className="barcode-form">
           <input
-            className={styles.input}
+            className="barcode-input"
             type="text"
             placeholder="e.g. 0737628064502"
             value={barcode}
             onChange={(e) => setBarcode(e.target.value)}
           />
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Looking up…' : 'Look Up'}
+            {loading ? 'Looking up…' : 'Look up'}
           </button>
         </form>
-        {error && <p className={styles.error}>{error}</p>}
+        {error && <p className="barcode-error">{error}</p>}
       </div>
 
-      <div className={styles.results}>
+      <div className="barcode-results">
         <ScanResults result={result} onAddToFridge={onAddToFridge} />
       </div>
     </div>

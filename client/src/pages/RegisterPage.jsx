@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import styles from './AuthPage.module.css';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -28,26 +27,32 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.card}>
-        <div className={styles.heading}>
-          <h1>FridgeIQ</h1>
-          <p>Create your account to get started</p>
+    <div className="auth-page">
+      <div className="auth-panel">
+        <div className="auth-brand">
+          <span className="auth-brand-mark">FQ</span>
+          <span className="auth-brand-name">FridgeIQ</span>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <div className="auth-heading">
+          <h1>Create account</h1>
+          <p>Start tracking your fridge today</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label>Name</label>
+            <label>Your name</label>
             <input
-              placeholder="Your name"
+              placeholder="Jane Smith"
               value={form.name}
               onChange={(e) => set('name', e.target.value)}
               required
+              autoFocus
             />
           </div>
 
           <div className="form-group">
-            <label>Email Address</label>
+            <label>Email address</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -61,6 +66,7 @@ export default function RegisterPage() {
             <label>Password</label>
             <input
               type="password"
+              placeholder="Min. 6 characters"
               value={form.password}
               onChange={(e) => set('password', e.target.value)}
               required
@@ -69,25 +75,39 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label>Confirm Password</label>
+            <label>Confirm password</label>
             <input
               type="password"
+              placeholder="••••••••"
               value={form.confirm}
               onChange={(e) => set('confirm', e.target.value)}
               required
             />
           </div>
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error && <p className="auth-error">{error}</p>}
 
-          <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={loading}>
-            {loading ? 'Creating account…' : 'Create Account'}
+          <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>
+            {loading ? 'Creating account…' : 'Create account'}
           </button>
         </form>
 
-        <p className={styles.switchText}>
+        <p className="auth-switch">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
+      </div>
+
+      <div className="auth-art">
+        <div className="auth-art-inner">
+          <div className="auth-art-label">Your kitchen, organized.</div>
+          <div className="auth-art-grid">
+            {['🥛', '🧀', '🥚', '🥩', '🥦', '🍋', '🫙', '🧄', '🥕'].map((emoji, i) => (
+              <div key={i} className="auth-art-cell" style={{ animationDelay: `${i * 0.08}s` }}>
+                {emoji}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

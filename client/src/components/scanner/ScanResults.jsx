@@ -1,11 +1,10 @@
 import { formatDate } from '../../utils/dateHelpers';
-import styles from './ScanResults.module.css';
 
 export default function ScanResults({ result, onAddToFridge }) {
   if (!result) {
     return (
-      <div className={styles.empty}>
-        <div className={styles.icon}>📷</div>
+      <div className="scan-empty">
+        <div className="scan-empty-icon">📷</div>
         <p>No results yet</p>
         <span>Upload a food image to begin scanning</span>
       </div>
@@ -13,38 +12,38 @@ export default function ScanResults({ result, onAddToFridge }) {
   }
 
   return (
-    <div className={styles.results}>
-      <div className={styles.identified}>
+    <div className="scan-results">
+      <div className="scan-identified">
         <span className="badge badge-green">Verified</span>
         <h3>{result.name}</h3>
-        {result.brand && <p className={styles.brand}>{result.brand}</p>}
+        {result.brand && <p className="scan-brand">{result.brand}</p>}
       </div>
 
       {result.expirationDate && (
-        <div className={styles.expiry}>
+        <div className="scan-expiry">
           <label>Expiration Date</label>
           <span>{formatDate(result.expirationDate)}</span>
         </div>
       )}
 
       {result.nutrition && (
-        <div className={styles.nutrition}>
+        <div className="scan-nutrition">
           <h4>Nutritional Information</h4>
-          <div className={styles.macros}>
+          <div className="scan-macros">
             {result.nutrition.calories && (
-              <div className={styles.macro}>
+              <div className="scan-macro">
                 <span>{result.nutrition.calories}</span>
                 <label>Calories</label>
               </div>
             )}
             {result.nutrition.servingSize && (
-              <div className={styles.macro}>
+              <div className="scan-macro">
                 <span>{result.nutrition.servingSize}</span>
                 <label>Serving Size</label>
               </div>
             )}
           </div>
-          <table className={styles.table}>
+          <table className="scan-table">
             <tbody>
               {result.nutrition.protein != null && <tr><td>Protein</td><td>{result.nutrition.protein}g</td></tr>}
               {result.nutrition.carbs != null && <tr><td>Carbohydrates</td><td>{result.nutrition.carbs}g</td></tr>}
@@ -55,7 +54,7 @@ export default function ScanResults({ result, onAddToFridge }) {
             </tbody>
           </table>
           {result.nutrition.vitamins?.length > 0 && (
-            <div className={styles.vitamins}>
+            <div className="scan-vitamins">
               <label>Vitamins & Minerals</label>
               <span>{result.nutrition.vitamins.join(' · ')}</span>
             </div>

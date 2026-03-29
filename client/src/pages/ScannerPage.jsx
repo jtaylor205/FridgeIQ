@@ -5,7 +5,6 @@ import ScanResults from '../components/scanner/ScanResults';
 import BarcodeScanner from '../components/scanner/BarcodeScanner';
 import AddItemModal from '../components/fridge/AddItemModal';
 import { scannerService } from '../services/scannerService';
-import styles from './ScannerPage.module.css';
 
 const TABS = ['Label Scan', 'Barcode Scan'];
 
@@ -45,11 +44,11 @@ export default function ScannerPage() {
         <p>Upload a photo or scan a barcode to add items to your fridge</p>
       </div>
 
-      <div className={styles.tabs}>
+      <div className="scanner-tabs">
         {TABS.map((tab) => (
           <button
             key={tab}
-            className={`${styles.tab} ${activeTab === tab ? styles.activeTab : ''}`}
+            className={`scanner-tab${activeTab === tab ? ' scanner-tab-active' : ''}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
@@ -58,30 +57,30 @@ export default function ScannerPage() {
       </div>
 
       {activeTab === 'Label Scan' && (
-        <div className={styles.layout}>
-          <div className={styles.panel}>
-            <h2 className={styles.panelTitle}>Upload Food Image</h2>
-            <p className={styles.panelSub}>Drag and drop or click to upload</p>
+        <div className="scanner-layout">
+          <div className="scanner-panel">
+            <h2 className="scanner-panel-title">Upload Food Image</h2>
+            <p className="scanner-panel-sub">Drag and drop or click to upload</p>
             <ImageUploader onFileSelect={handleFileSelect} />
             {file && (
-              <button className={`btn btn-primary ${styles.scanBtn}`} onClick={handleScan} disabled={scanning}>
+              <button className="btn btn-primary scanner-scan-btn" onClick={handleScan} disabled={scanning}>
                 {scanning ? 'Scanning…' : 'Scan Image'}
               </button>
             )}
-            {error && <p className={styles.error}>{error}</p>}
+            {error && <p className="scanner-error">{error}</p>}
           </div>
 
-          <div className={styles.panel}>
-            <h2 className={styles.panelTitle}>Scan Results</h2>
-            <p className={styles.panelSub}>{result ? 'Food item identified' : 'Upload an image to see results'}</p>
+          <div className="scanner-panel">
+            <h2 className="scanner-panel-title">Scan Results</h2>
+            <p className="scanner-panel-sub">{result ? 'Food item identified' : 'Upload an image to see results'}</p>
             <ScanResults result={result} onAddToFridge={setAddModal} />
           </div>
         </div>
       )}
 
       {activeTab === 'Barcode Scan' && (
-        <div className={styles.barcode}>
-          <div className={styles.panel}>
+        <div className="scanner-barcode">
+          <div className="scanner-panel">
             <BarcodeScanner onAddToFridge={setAddModal} />
           </div>
         </div>

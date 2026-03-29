@@ -1,35 +1,29 @@
-import styles from './MealCard.module.css';
-
 export default function MealCard({ meal }) {
   const allInFridge = meal.missingIngredients.length === 0;
 
   return (
-    <div className={styles.card}>
-      <div className={styles.imageWrapper}>
+    <div className="meal-card">
+      <div className="meal-image-wrap">
         {meal.imageUrl ? (
-          <img src={meal.imageUrl} alt={meal.name} className={styles.image} />
+          <img src={meal.imageUrl} alt={meal.name} className="meal-image" />
         ) : (
-          <div className={styles.imagePlaceholder}>🍽️</div>
+          <div className="meal-placeholder">🍽️</div>
         )}
+        <span className={`meal-status-pill${allInFridge ? ' meal-status-done' : ' meal-status-in-progress'}`}>
+          {allInFridge ? 'Ready to make' : 'Missing items'}
+        </span>
       </div>
 
-      <div className={styles.body}>
-        <div className={styles.header}>
-          <span className={`${styles.status} ${allInFridge ? styles.done : styles.inProgress}`}>
-            {allInFridge ? 'Done' : 'In Progress'}
-          </span>
-          <h3 className={styles.name}>{meal.name}</h3>
-        </div>
+      <div className="meal-body">
+        <h3 className="meal-name">{meal.name}</h3>
 
-        <ul className={styles.ingredients}>
+        <ul className="meal-ingredients">
           {meal.ingredients.map((ing) => (
-            <li key={ing.name} className={styles.ingredient}>
-              <span className={ing.inFridge ? styles.checked : styles.unchecked}>
-                {ing.inFridge ? '✓' : '○'}
-              </span>
-              <span className={styles.ingName}>{ing.name}</span>
-              <span className={ing.inFridge ? styles.inFridgeLabel : styles.goToStore}>
-                {ing.inFridge ? 'In Fridge' : 'Go to Store'}
+            <li key={ing.name} className={`meal-ingredient${ing.inFridge ? ' meal-in-fridge' : ' meal-missing'}`}>
+              <span className="meal-check-mark">{ing.inFridge ? '✓' : ''}</span>
+              <span className="meal-ing-name">{ing.name}</span>
+              <span className="meal-ing-tag">
+                {ing.inFridge ? 'In fridge' : 'Need to buy'}
               </span>
             </li>
           ))}

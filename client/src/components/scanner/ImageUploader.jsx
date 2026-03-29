@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react';
-import styles from './ImageUploader.module.css';
 
 export default function ImageUploader({ onFileSelect }) {
   const [preview, setPreview] = useState(null);
@@ -18,7 +17,7 @@ export default function ImageUploader({ onFileSelect }) {
 
   return (
     <div
-      className={styles.dropzone}
+      className="uploader-dropzone"
       onDrop={handleDrop}
       onDragOver={(e) => e.preventDefault()}
       onClick={() => inputRef.current.click()}
@@ -27,25 +26,31 @@ export default function ImageUploader({ onFileSelect }) {
         ref={inputRef}
         type="file"
         accept="image/png, image/jpeg"
-        className={styles.hidden}
+        className="uploader-hidden"
         onChange={(e) => handleFile(e.target.files[0])}
       />
 
       {preview ? (
-        <div className={styles.preview}>
+        <div className="uploader-preview">
           <img src={preview} alt="Food label preview" />
           <button
-            className={styles.changeBtn}
+            className="uploader-change-btn"
             onClick={(e) => { e.stopPropagation(); setPreview(null); onFileSelect(null); }}
           >
-            Upload Different Image
+            Change image
           </button>
         </div>
       ) : (
-        <div className={styles.empty}>
-          <div className={styles.icon}>↑</div>
-          <p>Click to upload or drag and drop</p>
-          <span>PNG, JPG, JPEG (max 10MB)</span>
+        <div className="uploader-empty">
+          <div className="uploader-upload-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+          </div>
+          <p>Click or drag to upload</p>
+          <span>PNG, JPG up to 10MB</span>
         </div>
       )}
     </div>

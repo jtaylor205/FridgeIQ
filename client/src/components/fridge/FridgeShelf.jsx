@@ -1,17 +1,21 @@
 import FridgeItem from './FridgeItem';
-import styles from './FridgeShelf.module.css';
 
 export default function FridgeShelf({ label, items, onItemClick, onAddClick }) {
   return (
-    <section className={styles.shelf}>
-      <h2 className={styles.label}>{label}</h2>
-      <div className={styles.grid}>
+    <section className="shelf-section">
+      <div className="shelf-header">
+        <span className="shelf-label">{label}</span>
+        {items.length > 0 && (
+          <span className="shelf-count">{items.length} item{items.length !== 1 ? 's' : ''}</span>
+        )}
+      </div>
+      <div className="shelf-grid">
         {items.map((item) => (
           <FridgeItem key={item._id} item={item} onClick={() => onItemClick(item)} />
         ))}
-        <button className={styles.addSlot} onClick={() => onAddClick(label.toLowerCase())}>
-          <span className={styles.plus}>+</span>
-          <span>Add to {label}</span>
+        <button className="shelf-add-slot" onClick={() => onAddClick(label.toLowerCase())}>
+          <span className="shelf-plus">+</span>
+          <span>Add item</span>
         </button>
       </div>
     </section>

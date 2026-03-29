@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { MOCK_EXPIRATION_ALERTS } from '../mocks/data';
 import ExpirationAlert from '../components/expiration/ExpirationAlert';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import styles from './ExpirationPage.module.css';
-
 
 export default function ExpirationPage() {
   const [alerts, setAlerts] = useState(null);
@@ -27,10 +25,10 @@ export default function ExpirationPage() {
 
   return (
     <div>
-      <div className={styles.headerRow}>
+      <div className="exp-page-header">
         <div>
-          <h1>Expiration Alerts</h1>
-          <p className={styles.sub}>{totalTracked} item{totalTracked !== 1 ? 's' : ''} tracked</p>
+          <h1>Expiration</h1>
+          <p className="exp-page-sub">{totalTracked} item{totalTracked !== 1 ? 's' : ''} tracked this week</p>
         </div>
         {urgentCount > 0 && (
           <span className="badge badge-red">{urgentCount} urgent</span>
@@ -38,30 +36,35 @@ export default function ExpirationPage() {
       </div>
 
       {totalTracked === 0 ? (
-        <div className={styles.empty}>
-          <p>All clear — nothing expiring this week.</p>
+        <div className="exp-empty">
+          <div className="exp-empty-icon">✓</div>
+          <div className="exp-empty-title">All clear</div>
+          <p className="exp-empty-text">Nothing expiring this week. You're on top of it.</p>
         </div>
       ) : (
         <>
-          <AlertSection title="Expired" icon="⚠" items={alerts?.expired} />
-          <AlertSection title="Expiring Today" icon="⚠" items={alerts?.today} />
-          <AlertSection title="Expiring Tomorrow" icon="⚠" items={alerts?.tomorrow} />
-          <AlertSection title="Expiring This Week" icon="⚠" items={alerts?.thisWeek} />
+          <AlertSection title="Expired" items={alerts?.expired} urgent />
+          <AlertSection title="Expiring Today" items={alerts?.today} urgent />
+          <AlertSection title="Expiring Tomorrow" items={alerts?.tomorrow} />
+          <AlertSection title="This Week" items={alerts?.thisWeek} />
         </>
       )}
     </div>
   );
 }
 
-function AlertSection({ title, icon, items }) {
+function AlertSection({ title, items, urgent }) {
   if (!items?.length) return null;
   return (
-    <section style={{ marginBottom: 28 }}>
-      <h2 style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span>{icon}</span> {title}
-      </h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {items.map((item) => <ExpirationAlert key={item._id} item={item} />)}
+    <section className="exp-section">
+      <div className="exp-section-header">
+        <span className="exp-section-title">{title}</span>
+        <span className="exp-section-count">{items.length}</span>
+      </div>
+      <div className="exp-list">
+        {items.map((item) => (
+          <ExpirationAlert key={item._id} item={item} />
+        ))}
       </div>
     </section>
   );

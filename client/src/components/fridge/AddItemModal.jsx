@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useFridge } from '../../context/FridgeContext';
-import styles from './AddItemModal.module.css';
 
 const SHELVES = ['top', 'middle', 'bottom', 'drawer', 'door'];
 const CATEGORIES = ['dairy', 'meat', 'produce', 'grains', 'beverages', 'condiments', 'frozen', 'other'];
@@ -41,11 +40,11 @@ export default function AddItemModal({ initialShelf = 'middle', onClose, prefill
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <div className={styles.header}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
           <h2>Add Item</h2>
-          <button className={styles.close} onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -59,7 +58,7 @@ export default function AddItemModal({ initialShelf = 'middle', onClose, prefill
             <input value={form.brand} onChange={(e) => set('brand', e.target.value)} placeholder="Optional" />
           </div>
 
-          <div className={styles.row}>
+          <div className="modal-row">
             <div className="form-group">
               <label>Quantity</label>
               <input
@@ -85,7 +84,7 @@ export default function AddItemModal({ initialShelf = 'middle', onClose, prefill
             <input type="date" value={form.expirationDate} onChange={(e) => set('expirationDate', e.target.value)} />
           </div>
 
-          <div className={styles.row}>
+          <div className="modal-row">
             <div className="form-group">
               <label>Shelf</label>
               <select value={form.shelf} onChange={(e) => set('shelf', e.target.value)}>
@@ -100,14 +99,14 @@ export default function AddItemModal({ initialShelf = 'middle', onClose, prefill
             </div>
           </div>
 
-          <label className={styles.checkLabel}>
+          <label className="modal-check-label">
             <input type="checkbox" checked={form.isShared} onChange={(e) => set('isShared', e.target.checked)} />
             Mark as shared with roommates
           </label>
 
-          {error && <p className={styles.error}>{error}</p>}
+          {error && <p className="modal-error">{error}</p>}
 
-          <div className={styles.footer}>
+          <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
             <button type="submit" className="btn btn-primary" disabled={loading}>
               {loading ? 'Adding…' : 'Add Item'}
