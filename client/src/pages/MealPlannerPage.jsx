@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react';
-import { MOCK_MEAL_SUGGESTIONS } from '../mocks/data';
 import MealCard from '../components/meals/MealCard';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { mealService } from '../services/mealService';
 
 export default function MealPlannerPage() {
   const [meals, setMeals] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    setTimeout(() => {
-      setMeals(MOCK_MEAL_SUGGESTIONS);
-      setLoading(false);
-    }, 300);
+    const loadMeals = async () => {
+      try {
+        const data = await mealService.getSuggestions();
+        setMeals(data);
+      } catch (err) {
+        setError(err.message || 'Failed to load meal suggestions.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadMeals();
   }, []);
 
   if (loading) return <LoadingSpinner />;
@@ -25,6 +34,8 @@ export default function MealPlannerPage() {
         <h1>Meal Planner</h1>
         <p>Meal ideas based on what's in your fridge right now</p>
       </div>
+
+      {error && <p className="auth-error">{error}</p>}
 
       {!meals?.length ? (
         <div className="meals-empty">

@@ -1,17 +1,26 @@
 import { useEffect, useState } from 'react';
-import { MOCK_EXPIRATION_ALERTS } from '../mocks/data';
 import ExpirationAlert from '../components/expiration/ExpirationAlert';
 import LoadingSpinner from '../components/common/LoadingSpinner';
+import { expirationService } from '../services/expirationService';
 
 export default function ExpirationPage() {
   const [alerts, setAlerts] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    setTimeout(() => {
-      setAlerts(MOCK_EXPIRATION_ALERTS);
-      setLoading(false);
-    }, 300);
+    const loadAlerts = async () => {
+      try {
+        const data = await expirationService.getAlerts();
+        setAlerts(data);
+      } catch (err) {
+        setError(err.message || 'Failed to load expiration alerts.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAlerts();
   }, []);
 
   if (loading) return <LoadingSpinner />;
@@ -34,6 +43,8 @@ export default function ExpirationPage() {
           <span className="badge badge-red">{urgentCount} urgent</span>
         )}
       </div>
+
+      {error && <p className="auth-error">{error}</p>}
 
       {totalTracked === 0 ? (
         <div className="exp-empty">

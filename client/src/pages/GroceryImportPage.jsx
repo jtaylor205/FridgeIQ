@@ -1,29 +1,50 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFridge } from '../context/FridgeContext';
+import { useAuth } from '../context/AuthContext';
 import { groceryService } from '../services/groceryService';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { formatDate } from '../utils/dateHelpers';
 
 export default function GroceryImportPage() {
   const { fetchFridge } = useFridge();
-  const [connected, setConnected] = useState(false);
+  const { user, refreshUser } = useAuth();
   const [orders, setOrders] = useState(null);
   const [connecting, setConnecting] = useState(false);
   const [selected, setSelected] = useState({});
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState(null);
+  const [error, setError] = useState('');
+
+  const connected = !!user?.connectedGroceryAccount?.connected;
 
   const loadOrders = async () => {
     const data = await groceryService.getOrders();
     setOrders(data);
   };
 
+  useEffect(() => {
+    if (!connected) {
+      setOrders(null);
+      return;
+    }
+
+    loadOrders().catch((err) => {
+      setError(err.message || 'Failed to load grocery orders.');
+    });
+  }, [connected]);
+
   const handleConnect = async () => {
     setConnecting(true);
-    await groceryService.connectAccount('instacart');
-    await loadOrders();
-    setConnected(true);
-    setConnecting(false);
+    setError('');
+    try {
+      await groceryService.connectAccount('instacart');
+      await refreshUser();
+      await loadOrders();
+    } catch (err) {
+      setError(err.message || 'Failed to connect grocery account.');
+    } finally {
+      setConnecting(false);
+    }
   };
 
   const toggleItem = (orderId, itemIndex) => {
@@ -47,11 +68,17 @@ export default function GroceryImportPage() {
 
     if (!itemsToImport.length) return;
     setImporting(true);
-    const result = await groceryService.importItems(itemsToImport);
-    setImportResult(result.imported);
-    setSelected({});
-    fetchFridge();
-    setImporting(false);
+    setError('');
+    try {
+      const result = await groceryService.importItems(itemsToImport);
+      setImportResult(result.imported);
+      setSelected({});
+      await fetchFridge();
+    } catch (err) {
+      setError(err.message || 'Failed to import items.');
+    } finally {
+      setImporting(false);
+    }
   };
 
   const selectedCount = Object.values(selected).filter(Boolean).length;
@@ -62,6 +89,8 @@ export default function GroceryImportPage() {
         <h1>Grocery Import</h1>
         <p>Pull items from your recent grocery orders directly into your fridge</p>
       </div>
+
+      {error && <p className="auth-error">{error}</p>}
 
       {!connected ? (
         <div className="grocery-connect-card">

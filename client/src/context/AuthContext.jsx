@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { MOCK_USER } from '../mocks/data';
+import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { authService } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -7,31 +7,60 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('mock_user');
-    if (saved) setUser(JSON.parse(saved));
-    setLoading(false);
+  const persistSession = useCallback((authData) => {
+    localStorage.setItem('token', authData.token);
+    setUser(authData.user);
   }, []);
 
+  const clearSession = useCallback(() => {
+    localStorage.removeItem('token');
+    setUser(null);
+  }, []);
+
+  const refreshUser = useCallback(async () => {
+    const currentUser = await authService.getMe();
+    setUser(currentUser);
+    return currentUser;
+  }, []);
+
+  useEffect(() => {
+    const initAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        await refreshUser();
+      } catch {
+        clearSession();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
+  }, [clearSession, refreshUser]);
+
   const login = async (email, password) => {
-    const u = { ...MOCK_USER, email };
-    localStorage.setItem('mock_user', JSON.stringify(u));
-    setUser(u);
+    const authData = await authService.login(email, password);
+    persistSession(authData);
+    return authData.user;
   };
 
   const register = async (name, email, password) => {
-    const u = { ...MOCK_USER, name, email };
-    localStorage.setItem('mock_user', JSON.stringify(u));
-    setUser(u);
+    const authData = await authService.register(name, email, password);
+    persistSession(authData);
+    return authData.user;
   };
 
   const logout = () => {
-    localStorage.removeItem('mock_user');
-    setUser(null);
+    clearSession();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );

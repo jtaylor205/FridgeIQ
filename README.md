@@ -2,7 +2,7 @@
 
 FridgeIQ is a MERN stack web app that lets users track their fridge contents, monitor expiration dates, scan food labels, import items directly from grocery orders, and get meal suggestions based on what they have.
 
-## Team Cool Cats — CIS4930
+## Team Cool Cats - CIS4930
 
 | Name | Role |
 |------|------|
@@ -90,50 +90,115 @@ FridgeIQ/
 
 ## Getting Started
 
-### Viewing the skeleton (no setup required)
+### Frontend-only mock view
 
-The frontend runs entirely on mock data — no backend, no `.env`, no database needed.
+If you only want to view the UI shell without backend setup, the older mock-data flow is no longer the default path in code. The app now expects the backend for auth and persisted data.
 
-```bash
-cd client
-npm install
-npm run dev
-```
-
-Open http://localhost:5173 — any email/password will log you in.
+If you want the full app working, use one of the setups below.
 
 ---
 
-### Full stack (when the backend is ready)
+### Full stack with local MongoDB
 
-```bash
-# 1. Configure environment
-cp .env.example .env
-# Fill in MONGO_URI, JWT_SECRET, and any API keys
+```powershell
+Copy-Item .env.example .env
+```
 
-# 2. Install everything
-npm install          # installs concurrently at root
-npm run install:all  # installs server + client deps
+Set these required values in `.env`:
 
-# 3. Run both
+```env
+MONGO_URI=mongodb://localhost:27017/fridgeiq
+JWT_SECRET=replace_this_with_a_long_random_secret
+JWT_EXPIRE=7d
+PORT=5000
+```
+
+Install dependencies and run both apps:
+
+```powershell
+npm install
+npm run install:all
 npm run dev
 ```
 
-Frontend: http://localhost:5173
+Frontend: http://localhost:5173  
 Backend: http://localhost:5000
 
 ---
 
-### Switching from mock to real API
+### Full stack with MongoDB Atlas
 
-Each file in `client/src/services/` has the real API call commented out directly above the mock. When the backend is ready, swap them out one service at a time.
+Create an Atlas cluster, create a database user, allow your IP in `Network Access`, then set `MONGO_URI` in `.env`:
+
+```env
+MONGO_URI=mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER_HOST/fridgeiq?retryWrites=true&w=majority
+JWT_SECRET=replace_this_with_a_long_random_secret
+JWT_EXPIRE=7d
+PORT=5000
+```
+
+Then run:
+
+```powershell
+npm install
+npm run install:all
+npm run dev
+```
+
+---
+
+### Authentication flow
+
+1. Register at `/register` or sign in at `/login`.
+2. The backend returns a JWT and the current user.
+3. The client stores the JWT in `localStorage` under `token`.
+4. Axios sends `Authorization: Bearer <token>` automatically on API requests.
+5. Refreshing the page restores the session through `/api/auth/me`.
+
+---
+
+### What is backed by MongoDB now
+
+- User accounts
+- Login sessions via JWT
+- Fridge creation on registration
+- Fridge item CRUD
+- Expiration alerts
+- Meal suggestions derived from fridge items
+- Grocery connection state and imports
+- Scanner upload metadata
+
+---
+
+## Environment Variables
+
+Required:
+
+```env
+MONGO_URI=
+JWT_SECRET=
+JWT_EXPIRE=7d
+PORT=5000
+```
+
+Optional integrations:
+
+```env
+NUTRITION_API_KEY=
+NUTRITION_API_HOST=trackapi.nutritionix.com
+EMAIL_HOST=
+EMAIL_PORT=587
+EMAIL_USER=
+EMAIL_PASS=
+EMAIL_FROM=noreply@fridgeiq.com
+```
 
 ---
 
 ## Integration Points (for teammates to build out)
 
-- **Food Scanner** (`server/controllers/scannerController.js`) — connect to a vision/nutrition API (Nutritionix, Open Food Facts, or Google Vision) and return real parsed data.
-- **Meal Planner** (`server/controllers/mealController.js`) — call a recipe API (Spoonacular or Edamam) with the user's ingredient list.
-- **Grocery Import** (`server/services/grocerySimulator.js`) — replace simulated orders with a real Instacart or store API once OAuth is set up.
-- **Expiration Emails** (`server/utils/sendEmail.js`) — configure Nodemailer and add a scheduled job (e.g. node-cron) to send daily digests.
-- **Shared Fridges** — model is ready (`Fridge.members`); needs UI + invite flow.
+- **Food Scanner** (`server/controllers/scannerController.js`) - connect to a vision/nutrition API (Nutritionix, Open Food Facts, or Google Vision) and return real parsed data.
+- **Meal Planner** (`server/controllers/mealController.js`) - call a recipe API (Spoonacular or Edamam) with the user's ingredient list.
+- **Grocery Import** (`server/services/grocerySimulator.js`) - replace simulated orders with a real Instacart or store API once OAuth is set up.
+- **Expiration Emails** (`server/utils/sendEmail.js`) - configure Nodemailer and add a scheduled job (for example `node-cron`) to send daily digests.
+- **Shared Fridges** - model is ready (`Fridge.members`); needs UI + invite flow.

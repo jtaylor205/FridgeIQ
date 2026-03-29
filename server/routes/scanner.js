@@ -2,8 +2,11 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const { scanFoodLabel } = require('../controllers/scannerController');
 const { protect } = require('../middleware/auth');
+
+fs.mkdirSync('uploads', { recursive: true });
 
 const storage = multer.diskStorage({
   destination: 'uploads/',

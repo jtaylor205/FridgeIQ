@@ -3,15 +3,20 @@ import { useAuth } from '../context/AuthContext';
 import { groceryService } from '../services/groceryService';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [disconnecting, setDisconnecting] = useState(false);
+  const [error, setError] = useState('');
 
   const isConnected = user?.connectedGroceryAccount?.connected;
 
   const handleDisconnect = async () => {
     setDisconnecting(true);
+    setError('');
     try {
       await groceryService.disconnectAccount();
+      await refreshUser();
+    } catch (err) {
+      setError(err.message || 'Failed to disconnect grocery account.');
     } finally {
       setDisconnecting(false);
     }
@@ -26,6 +31,8 @@ export default function ProfilePage() {
       <div className="page-header">
         <h1>Profile</h1>
       </div>
+
+      {error && <p className="auth-error">{error}</p>}
 
       <div className="profile-hero">
         <div className="profile-hero-avatar">{initials}</div>

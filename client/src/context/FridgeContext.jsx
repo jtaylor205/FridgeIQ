@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-import { MOCK_FRIDGE } from '../mocks/data';
+import { fridgeService } from '../services/fridgeService';
 
 const FridgeContext = createContext(null);
 
@@ -9,28 +9,27 @@ export function FridgeProvider({ children }) {
 
   const fetchFridge = useCallback(async () => {
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 300));
-    setFridge(structuredClone(MOCK_FRIDGE));
-    setLoading(false);
+    try {
+      const data = await fridgeService.getFridge();
+      setFridge(data);
+      return data;
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const addItem = async (itemData) => {
-    const item = {
-      _id: `item-${Date.now()}`,
-      addedBy: { name: 'Jaedon' },
-      importSource: 'manual',
-      ...itemData,
-    };
+    const item = await fridgeService.addItem(itemData);
     setFridge((prev) => ({ ...prev, items: [...(prev?.items || []), item] }));
     return item;
   };
 
   const updateItem = async (id, updates) => {
-    let updated;
+    const updated = await fridgeService.updateItem(id, updates);
     setFridge((prev) => ({
       ...prev,
       items: prev.items.map((i) => {
-        if (i._id === id) { updated = { ...i, ...updates }; return updated; }
+        if (i._id === id) return updated;
         return i;
       }),
     }));
@@ -38,6 +37,7 @@ export function FridgeProvider({ children }) {
   };
 
   const deleteItem = async (id) => {
+    await fridgeService.deleteItem(id);
     setFridge((prev) => ({ ...prev, items: prev.items.filter((i) => i._id !== id) }));
   };
 
