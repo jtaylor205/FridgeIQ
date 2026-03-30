@@ -88,50 +88,12 @@ FridgeIQ/
 
 ---
 
-## Getting Started
-
-### Frontend-only mock view
-
-If you only want to view the UI shell without backend setup, the older mock-data flow is no longer the default path in code. The app now expects the backend for auth and persisted data.
-
-If you want the full app working, use one of the setups below.
-
----
-
-### Full stack with local MongoDB
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Set these required values in `.env`:
-
-```env
-MONGO_URI=mongodb://localhost:27017/fridgeiq
-JWT_SECRET=replace_this_with_a_long_random_secret
-JWT_EXPIRE=7d
-PORT=5000
-```
-
-Install dependencies and run both apps:
-
-```powershell
-npm install
-npm run install:all
-npm run dev
-```
-
-Frontend: http://localhost:5173  
-Backend: http://localhost:5000
-
----
-
 ### Full stack with MongoDB Atlas
 
 Create an Atlas cluster, create a database user, allow your IP in `Network Access`, then set `MONGO_URI` in `.env`:
 
 ```env
-MONGO_URI=mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER_HOST/fridgeiq?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://USERNAME:PASSWORD@cluster0.enjs5ra.mongodb.net/fridgeiq?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=replace_this_with_a_long_random_secret
 JWT_EXPIRE=7d
 PORT=5000
