@@ -1,0 +1,467 @@
+﻿/* ══════════════════════════════════════════════════════════════
+   IMAGE UPLOADER
+   ══════════════════════════════════════════════════════════════ */
+
+.uploader-dropzone {
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  min-height: 200px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+.uploader-dropzone:hover {
+  border-color: var(--green);
+  background: var(--green-dim);
+}
+
+.uploader-hidden {
+  display: none;
+}
+
+.uploader-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 200px;
+  padding: 28px;
+  text-align: center;
+}
+
+.uploader-upload-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-2);
+}
+
+.uploader-empty p {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 450;
+}
+
+.uploader-empty span {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.uploader-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+}
+
+.uploader-preview img {
+  max-height: 240px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.uploader-change-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-2);
+  padding: 7px 16px;
+  font-size: 13px;
+  transition: background 0.12s, border-color 0.12s;
+  box-shadow: var(--shadow-sm);
+}
+
+.uploader-change-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCAN RESULTS
+   ══════════════════════════════════════════════════════════════ */
+
+.scan-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 200px;
+  text-align: center;
+  padding: 24px;
+}
+
+.scan-empty-icon {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+.scan-empty p {
+  font-size: 14px;
+  color: var(--text-2);
+  font-weight: 450;
+}
+
+.scan-empty span {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.scan-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scan-identified {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.scan-identified h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-top: 6px;
+}
+
+.scan-brand {
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.scan-expiry {
+  background: var(--amber-dim);
+  border: 1px solid rgba(185, 115, 22, 0.2);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.scan-expiry label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scan-expiry span {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.scan-nutrition {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+}
+
+.scan-nutrition h4 {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 14px;
+}
+
+.scan-macros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.scan-macro {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  flex: 1;
+}
+
+.scan-macro span {
+  display: block;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: -0.02em;
+}
+
+.scan-macro label {
+  display: block;
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.scan-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.scan-table tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.scan-table tr:last-child {
+  border-bottom: none;
+}
+
+.scan-table td {
+  padding: 7px 4px;
+  color: var(--text-2);
+}
+
+.scan-table td:last-child {
+  text-align: right;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.scan-vitamins {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.scan-vitamins label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.scan-vitamins span {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BARCODE SCANNER
+   ══════════════════════════════════════════════════════════════ */
+
+.barcode-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.barcode-camera {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 180px;
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--text-3);
+  background: var(--surface-2);
+  padding: 24px;
+  text-align: center;
+}
+
+.barcode-camera-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  box-shadow: var(--shadow-sm);
+}
+
+.barcode-camera p {
+  font-size: 14px;
+  color: var(--text);
+  font-weight: 450;
+}
+
+.barcode-camera span {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.barcode-manual {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barcode-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.barcode-or-divider::before,
+.barcode-or-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--border);
+}
+
+.barcode-form {
+  display: flex;
+  gap: 10px;
+}
+
+.barcode-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 10px 13px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.barcode-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-dim);
+}
+
+.barcode-input::placeholder {
+  color: var(--text-3);
+}
+
+.barcode-error {
+  font-size: 13px;
+  color: var(--red);
+  padding: 10px 13px;
+  background: var(--red-dim);
+  border-radius: var(--radius);
+}
+
+.barcode-results {
+  margin-top: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCANNER PAGE
+   ══════════════════════════════════════════════════════════════ */
+
+.scanner-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 28px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  width: fit-content;
+}
+
+.scanner-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 450;
+  padding: 8px 18px;
+  border-radius: var(--radius);
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+}
+
+.scanner-tab:hover {
+  color: var(--text);
+}
+
+.scanner-tab-active {
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 500;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+.scanner-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 760px) {
+  .scanner-layout {
+    grid-template-columns: 1fr;
+  }
+  .scanner-barcode {
+    max-width: 100%;
+  }
+}
+
+.scanner-barcode {
+  max-width: 580px;
+}
+
+.scanner-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.scanner-panel-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+  letter-spacing: -0.01em;
+}
+
+.scanner-panel-sub {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-bottom: 18px;
+}
+
+.scanner-scan-btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 11px;
+}
+
+.scanner-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 12px;
+  padding: 10px 13px;
+  background: var(--red-dim);
+  border-radius: var(--radius);
+}

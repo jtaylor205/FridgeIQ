@@ -1,0 +1,182 @@
+﻿/* ══════════════════════════════════════════════════════════════
+   GROCERY IMPORT PAGE
+   ══════════════════════════════════════════════════════════════ */
+
+.grocery-connect-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  padding: 56px 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  max-width: 500px;
+  margin: 40px auto;
+  box-shadow: var(--shadow);
+}
+
+.grocery-connect-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-xl);
+  background: var(--green-dim);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--green-dim-strong);
+}
+
+.grocery-connect-card h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.grocery-connect-card p {
+  color: var(--text-2);
+  font-size: 14px;
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+.grocery-sim-note {
+  font-size: 12px;
+  color: var(--text-3);
+  font-style: italic;
+}
+
+.grocery-success-banner {
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green-dim-strong);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  font-size: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grocery-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.grocery-selected-count {
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.grocery-order {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.grocery-order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.grocery-store {
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.grocery-order-date {
+  color: var(--text-3);
+  font-size: 13px;
+  margin-left: 6px;
+}
+
+.grocery-order-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.grocery-order-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+.grocery-order-item:last-child {
+  border-bottom: none;
+}
+
+.grocery-order-item:hover {
+  background: var(--surface-2);
+}
+
+.grocery-order-item-selected {
+  background: var(--green-dim) !important;
+}
+
+.grocery-checkbox {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+
+.grocery-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.grocery-item-name {
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grocery-item-brand {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.grocery-item-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.grocery-item-exp {
+  color: var(--amber);
+  font-weight: 500;
+}
