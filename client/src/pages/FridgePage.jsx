@@ -19,6 +19,7 @@ export default function FridgePage() {
   const { fridge, loading, fetchFridge } = useFridge();
   const [addModal, setAddModal] = useState(null);
   const [detailItem, setDetailItem] = useState(null);
+  const [editItem, setEditItem] = useState(null);
 
   useEffect(() => {
     fetchFridge();
@@ -57,9 +58,20 @@ export default function FridgePage() {
         />
       )}
 
+      {editItem && (
+        <AddItemModal
+          itemToEdit={editItem}
+          onClose={() => setEditItem(null)}
+        />
+      )}
+
       {detailItem && (
         <ItemDetailModal
           item={detailItem}
+          onEdit={(item) => {
+            setDetailItem(null);
+            setEditItem(item);
+          }}
           onClose={() => setDetailItem(null)}
         />
       )}

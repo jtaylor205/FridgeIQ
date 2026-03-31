@@ -1,0 +1,311 @@
+﻿/* ══════════════════════════════════════════════════════════════
+   MODALS (AddItemModal & ItemDetailModal shared overlay/box)
+   ══════════════════════════════════════════════════════════════ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 23, 20, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 24px;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 500px;
+  padding: 28px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-modal);
+  animation: slideUp 0.2s var(--ease);
+}
+
+/* ItemDetailModal uses a narrower box */
+.modal-box-narrow {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 460px;
+  padding: 28px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-modal);
+  animation: slideUp 0.2s var(--ease);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+  .modal-box,
+  .modal-box-narrow {
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-width: 100%;
+    max-height: 92vh;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+  .modal-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .modal-nutrition-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* ItemDetailModal header aligns flex-start */
+.modal-header-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.modal-header-detail h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.modal-close {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-2);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.modal-close:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+
+.modal-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.modal-check-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.modal-check-label input[type="checkbox"] {
+  accent-color: var(--green);
+  width: 15px;
+  height: 15px;
+}
+
+.modal-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-bottom: 12px;
+  padding: 10px 13px;
+  background: var(--red-dim);
+  border-radius: var(--radius);
+  border: 1px solid rgba(200, 75, 49, 0.18);
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* ItemDetailModal footer space-between */
+.modal-footer-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.modal-brand {
+  color: var(--text-2);
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.modal-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+}
+
+.modal-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.modal-expiry {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+}
+
+.modal-expiry-expired,
+.modal-expiry-today {
+  color: var(--red);
+  background: var(--red-dim);
+}
+
+.modal-expiry-tomorrow,
+.modal-expiry-soon {
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+
+.modal-expiry-ok {
+  color: var(--text-2);
+  background: var(--surface-2);
+}
+
+.modal-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 12px;
+}
+
+.modal-nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.modal-stat {
+  text-align: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 6px;
+}
+
+.modal-stat span {
+  display: block;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--green);
+  letter-spacing: -0.02em;
+}
+
+.modal-stat label {
+  display: block;
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-confirm-danger {
+  margin-top: 20px;
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(200, 75, 49, 0.18);
+  background: linear-gradient(135deg, rgba(200, 75, 49, 0.1), rgba(200, 75, 49, 0.03));
+}
+
+.modal-confirm-danger p {
+  margin: 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.modal-confirm-danger span {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.modal-confirm-danger-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.modal-footer-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-date-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-date-field input {
+  flex: 1;
+}
+
+.modal-date-trigger {
+  flex-shrink: 0;
+}

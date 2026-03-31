@@ -1,14 +1,24 @@
+import { useState } from 'react';
 import { useFridge } from '../../context/FridgeContext';
-import { expirationLabel, expirationStatus, formatDate } from '../../utils/dateHelpers';
+import { expirationLabel, expirationStatus } from '../../utils/dateHelpers';
 
-export default function ItemDetailModal({ item, onClose }) {
-  const { deleteItem, updateItem } = useFridge();
+export default function ItemDetailModal({ item, onClose, onEdit }) {
+  const { deleteItem } = useFridge();
   const status = expirationStatus(item.expirationDate);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const handleDelete = async () => {
-    if (!confirm(`Remove "${item.name}" from your fridge?`)) return;
-    await deleteItem(item._id);
-    onClose();
+    setIsDeleting(true);
+    setDeleteError('');
+    try {
+      await deleteItem(item._id);
+      onClose();
+    } catch {
+      setDeleteError('Failed to remove item. Try again.');
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -19,7 +29,7 @@ export default function ItemDetailModal({ item, onClose }) {
             <h2>{item.name}</h2>
             {item.brand && <p className="modal-brand">{item.brand}</p>}
           </div>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose} aria-label="Close modal">x</button>
         </div>
 
         {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="modal-image" />}
@@ -38,6 +48,8 @@ export default function ItemDetailModal({ item, onClose }) {
 
         <hr className="divider" />
 
+        {deleteError && <p className="modal-error">{deleteError}</p>}
+
         {item.nutrition && (
           <div>
             <h3 className="modal-section-title">Nutrition</h3>
@@ -50,8 +62,37 @@ export default function ItemDetailModal({ item, onClose }) {
           </div>
         )}
 
+        {confirmingDelete && (
+          <div className="modal-confirm-danger">
+            <p>Remove "{item.name}" from your fridge?</p>
+            <span>This action cannot be undone.</span>
+            <div className="modal-confirm-danger-actions">
+              <button className="btn btn-secondary" onClick={() => setConfirmingDelete(false)} disabled={isDeleting}>
+                Keep Item
+              </button>
+              <button className="btn btn-danger" onClick={handleDelete} disabled={isDeleting}>
+                {isDeleting ? 'Removing...' : 'Yes, Remove'}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="modal-footer-detail">
-          <button className="btn btn-danger" onClick={handleDelete}>Remove</button>
+          <div className="modal-footer-detail-actions">
+            <button className="btn btn-secondary" onClick={() => onEdit?.(item)} disabled={isDeleting}>
+              Edit
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                setDeleteError('');
+                setConfirmingDelete(true);
+              }}
+              disabled={confirmingDelete || isDeleting}
+            >
+              Remove
+            </button>
+          </div>
           <button className="btn btn-secondary" onClick={onClose}>Close</button>
         </div>
       </div>
