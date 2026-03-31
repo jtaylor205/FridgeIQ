@@ -8,7 +8,6 @@ const scannerRoutes = require('./routes/scanner');
 const expirationRoutes = require('./routes/expiration');
 const mealRoutes = require('./routes/meals');
 const groceryRoutes = require('./routes/grocery');
-
 const app = express();
 
 // TEMP: Manual trigger for expiration emails (for testing)
@@ -52,7 +51,6 @@ app.use('/api/scanner', scannerRoutes);
 app.use('/api/expiration', expirationRoutes);
 app.use('/api/meals', mealRoutes);
 app.use('/api/grocery', groceryRoutes);
-
 app.use(errorHandler);
 
 module.exports = app;
