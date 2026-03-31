@@ -79,16 +79,79 @@ export default function ProfilePage() {
           <p className="profile-description">
             Email alert preferences for expiration reminders.
           </p>
-          <span className="profile-coming-soon">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
-            </svg>
-            Notification settings coming soon
-          </span>
+          <NotificationSettings user={user} refreshUser={refreshUser} />
         </section>
       </div>
+    </div>
+  );
+}
+
+// NotificationSettings component (must be outside ProfilePage)
+import { authService } from '../services/authService';
+
+function NotificationSettings({ user, refreshUser }) {
+  const [emailAlerts, setEmailAlerts] = useState(user?.notificationPreferences?.emailAlerts ?? true);
+  const [days, setDays] = useState(user?.notificationPreferences?.daysBeforeExpiration ?? 3);
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  const handleToggle = async (e) => {
+    setSaving(true);
+    setMsg('');
+    try {
+      await authService.updateNotificationPreferences({ emailAlerts: e.target.checked });
+      setEmailAlerts(e.target.checked);
+      setMsg('Saved!');
+      await refreshUser();
+    } catch (err) {
+      setMsg(err.message || 'Failed to update.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDaysChange = async (e) => {
+    const val = parseInt(e.target.value, 10);
+    setDays(val);
+    setSaving(true);
+    setMsg('');
+    try {
+      await authService.updateNotificationPreferences({ daysBeforeExpiration: val });
+      setMsg('Saved!');
+      await refreshUser();
+    } catch (err) {
+      setMsg(err.message || 'Failed to update.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="notification-settings">
+      <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <input
+          type="checkbox"
+          checked={emailAlerts}
+          onChange={handleToggle}
+          disabled={saving}
+        />
+        Enable expiration email alerts
+      </label>
+      <div style={{ marginTop: 12 }}>
+        <label>
+          Days before expiration:{' '}
+          <input
+            type="number"
+            min={1}
+            max={14}
+            value={days}
+            onChange={handleDaysChange}
+            disabled={saving || !emailAlerts}
+            style={{ width: 50 }}
+          />
+        </label>
+      </div>
+      {msg && <div className="profile-msg" style={{ marginTop: 8 }}>{msg}</div>}
     </div>
   );
 }

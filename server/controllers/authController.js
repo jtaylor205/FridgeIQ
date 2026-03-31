@@ -47,8 +47,26 @@ const login = async (req, res, next) => {
   }
 };
 
+
 const getMe = async (req, res) => {
   res.json(req.user);
 };
 
-module.exports = { register, login, getMe };
+// PATCH /api/auth/notifications
+const updateNotificationPreferences = async (req, res, next) => {
+  try {
+    const { emailAlerts, daysBeforeExpiration } = req.body;
+    if (typeof emailAlerts !== 'undefined') {
+      req.user.notificationPreferences.emailAlerts = emailAlerts;
+    }
+    if (typeof daysBeforeExpiration !== 'undefined') {
+      req.user.notificationPreferences.daysBeforeExpiration = daysBeforeExpiration;
+    }
+    await req.user.save();
+    res.json({ notificationPreferences: req.user.notificationPreferences });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { register, login, getMe, updateNotificationPreferences };
