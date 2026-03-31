@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { scanFoodLabel } = require('../controllers/scannerController');
+const { scanFoodLabel, lookupUPC } = require('../controllers/scannerController');
 const { protect } = require('../middleware/auth');
 
 fs.mkdirSync('uploads', { recursive: true });
@@ -25,5 +25,6 @@ const upload = multer({
 });
 
 router.post('/scan', protect, upload.single('image'), scanFoodLabel);
+router.post('/upc', protect, lookupUPC);
 
 module.exports = router;
