@@ -7,8 +7,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import FridgePage from './pages/FridgePage';
 import ScannerPage from './pages/ScannerPage';
-import ExpirationPage from './pages/ExpirationPage';
-import MealPlannerPage from './pages/MealPlannerPage';
 import GroceryImportPage from './pages/GroceryImportPage';
 import ProfilePage from './pages/ProfilePage';
 
@@ -26,8 +24,6 @@ export default function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/fridge" element={<FridgePage />} />
                 <Route path="/scan" element={<ScannerPage />} />
-                <Route path="/expiration" element={<ExpirationPage />} />
-                <Route path="/meals" element={<MealPlannerPage />} />
                 <Route path="/import" element={<GroceryImportPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
               </Route>

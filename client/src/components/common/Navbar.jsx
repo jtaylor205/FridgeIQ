@@ -25,31 +25,6 @@ const NAV_LINKS = [
     ),
   },
   {
-    to: '/expiration',
-    label: 'Expiration',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 7v5l3 3" />
-      </svg>
-    ),
-  },
-  {
-    to: '/meals',
-    label: 'Meals',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="5" />
-        <path d="M5 4v7" />
-        <path d="M3.5 4v4" />
-        <path d="M6.5 4v4" />
-        <path d="M5 11v9" />
-        <path d="M18 4c1.1 1.4 1.5 3.1 1.5 4.8S19.1 12.2 18 13.5" />
-        <path d="M18 13.5V20" />
-      </svg>
-    ),
-  },
-  {
     to: '/import',
     label: 'Import',
     icon: (

@@ -30,8 +30,8 @@ export default function ScannerPage() {
     try {
       const data = await scannerService.scanImage(file);
       setResult(data);
-    } catch {
-      setError('Scan failed. Please try a clearer image.');
+    } catch (err) {
+      setError(err.message || 'Scan failed. Please try a clearer image.');
     } finally {
       setScanning(false);
     }

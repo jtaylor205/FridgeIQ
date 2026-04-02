@@ -1,31 +1,60 @@
+const fs = require('fs');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+
 const scanFoodLabel = async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No image uploaded' });
     }
 
-    // TODO: pass req.file to a vision/nutrition API (Nutritionix, Open Food Facts, Google Vision)
-    const result = {
-      name: 'Detected Item',
-      brand: null,
-      expirationDate: null,
-      imageUrl: `/uploads/${req.file.filename}`,
-      nutrition: {
-        calories: null,
-        protein: null,
-        carbs: null,
-        fat: null,
-        sugar: null,
-        fiber: null,
-        sodium: null,
-        servingSize: null,
-        vitamins: [],
-      },
-    };
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-    res.json(result);
+    const imageData = fs.readFileSync(req.file.path);
+    const base64 = imageData.toString('base64');
+
+    console.log('[scanFoodLabel] Sending image to Gemini...');
+    const result = await model.generateContent([
+      {
+        inlineData: { data: base64, mimeType: req.file.mimetype },
+      },
+      `Analyze this food product image. Extract the product name, brand, and any visible nutritional information.
+Return ONLY valid JSON in this exact format with no other text:
+{
+  "name": "product name",
+  "brand": "brand name or null",
+  "nutrition": {
+    "calories": number or null,
+    "protein": number or null,
+    "carbs": number or null,
+    "fat": number or null,
+    "sugar": number or null,
+    "fiber": number or null,
+    "sodium": number or null,
+    "servingSize": "string or null",
+    "vitamins": ["array of vitamin/mineral strings found on label"]
+  }
+}`,
+    ]);
+
+    const text = result.response.text();
+    console.log('[scanFoodLabel] Gemini response:', text);
+
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      return res.status(422).json({ message: 'Could not parse nutrition data from image' });
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    res.json({
+      ...parsed,
+      imageUrl: `/uploads/${req.file.filename}`,
+    });
   } catch (err) {
-    next(err);
+    console.error('[scanFoodLabel] Error:', err.message);
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -77,7 +106,6 @@ const lookupUPC = async (req, res, next) => {
     const nData = data.nutrition?.data || {};
     const per100g = nData.per_100g || {};
 
-    // Map the Avocavo response into the format our frontend expects
     const result = {
       name: p.name || 'Unknown Product',
       brand: p.brand || null,
