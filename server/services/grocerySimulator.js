@@ -1,5 +1,3 @@
-// Simulated grocery order data — replace with a real store API + OAuth flow later.
-
 const SIMULATED_ORDERS = [
   {
     id: 'order-001',

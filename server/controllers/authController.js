@@ -52,7 +52,6 @@ const getMe = async (req, res) => {
   res.json(req.user);
 };
 
-// PATCH /api/auth/notifications
 const updateNotificationPreferences = async (req, res, next) => {
   try {
     const { emailAlerts, daysBeforeExpiration } = req.body;

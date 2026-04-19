@@ -6,7 +6,6 @@ const API_KEY = process.env.SPOONACULAR_API_KEY;
 
 const getMealSuggestions = async (req, res, next) => {
   try {
-    //get the users fridge items
     const items = await FridgeItem.find({ fridge: req.user.fridge });
 
     if (!items.length) {
@@ -21,7 +20,6 @@ const getMealSuggestions = async (req, res, next) => {
 
     const { number = 8, ranking = 2, ignorePantry = true } = req.query;
 
-    //find recipes matching the ingredients in the fridge
     const spoonacularRes = await axios.get(
       `${SPOONACULAR_BASE}/recipes/findByIngredients`,
       {
@@ -43,7 +41,6 @@ const getMealSuggestions = async (req, res, next) => {
 
     const recipeIds = rawRecipes.map((r) => r.id).join(',');
 
-    //getting the full details of the recipes, nutritional information, recipe instructions etc
     const bulkRes = await axios.get(
       `${SPOONACULAR_BASE}/recipes/informationBulk`,
       {
@@ -143,7 +140,6 @@ const getMealSuggestions = async (req, res, next) => {
     });
 
     res.json(suggestions);
-    //error handeling
   } catch (err) {
     if (err.response) {
       const { status, data } = err.response;

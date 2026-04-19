@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { barcodeService } from '../../services/barcodeService';
 import ScanResults from './ScanResults';
 
-// TODO: replace camera placeholder with live scanning via @zxing/browser
-
 export default function BarcodeScanner({ onAddToFridge }) {
   const [barcode, setBarcode] = useState('');
   const [result, setResult] = useState(null);

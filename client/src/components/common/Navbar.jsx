@@ -87,7 +87,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ─── Theme ──────────────────────────────────────────────
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem('fridgeiq-theme') || 'light'; } catch { return 'light'; }
   });
@@ -101,7 +100,6 @@ export default function Navbar() {
 
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
-  // ─── Auth guard ──────────────────────────────────────────
   const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
   if (isAuthPage || !user) return null;
 
@@ -113,7 +111,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── Desktop sidebar ── */}
       <aside className="nav-sidebar">
         <div className="nav-top">
           <NavLink to="/fridge" className="nav-logo">
@@ -156,7 +153,6 @@ export default function Navbar() {
         </div>
       </aside>
 
-      {/* ── Mobile top bar ── */}
       <header className="nav-mobile-header">
         <NavLink to="/fridge" className="nav-mobile-logo">
           <img src={logoSrc} className="nav-logo-mark" style={{ width: 28, height: 28 }} alt="" />
@@ -170,7 +166,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ── Mobile bottom nav ── */}
       <nav className="nav-bottom-nav">
         {NAV_LINKS.map(({ to, label, icon }) => (
           <NavLink

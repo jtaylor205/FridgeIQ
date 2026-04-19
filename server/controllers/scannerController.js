@@ -4,13 +4,10 @@ const scanFoodLabel = async (req, res, next) => {
       return res.status(400).json({ message: 'No image uploaded' });
     }
 
-    // TODO: pass req.file to a vision/nutrition API (Nutritionix, Open Food Facts, Google Vision)
     const result = {
       name: 'Detected Item',
       brand: null,
       expirationDate: null,
-      // Vercel functions do not provide durable local storage. Return no local image URL
-      // unless this is later replaced with object storage (Blob/S3/Cloudinary).
       imageUrl: null,
       nutrition: {
         calories: null,
@@ -79,7 +76,6 @@ const lookupUPC = async (req, res, next) => {
     const nData = data.nutrition?.data || {};
     const per100g = nData.per_100g || {};
 
-    // Map the Avocavo response into the format our frontend expects
     const result = {
       name: p.name || 'Unknown Product',
       brand: p.brand || null,

@@ -10,7 +10,6 @@ const mealRoutes = require('./routes/meals');
 const groceryRoutes = require('./routes/grocery');
 const app = express();
 
-// TEMP: Manual trigger for expiration emails (for testing)
 const User = require('./models/User');
 const FridgeItem = require('./models/FridgeItem');
 const sendEmail = require('./utils/sendEmail');

@@ -86,7 +86,6 @@ export default function ProfilePage() {
   );
 }
 
-// NotificationSettings component (must be outside ProfilePage)
 import { authService } from '../services/authService';
 
 function NotificationSettings({ user, refreshUser }) {

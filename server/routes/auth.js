@@ -8,7 +8,6 @@ router.post('/register', register);
 router.post('/login', login);
 router.get('/me', protect, getMe);
 
-// Notification preferences
 router.patch('/notifications', protect, updateNotificationPreferences);
 
 module.exports = router;
