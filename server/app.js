@@ -41,9 +41,22 @@ app.post('/api/test/send-expiration-emails', async (req, res) => {
 	}
 });
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/fridge', fridgeRoutes);
@@ -51,6 +64,7 @@ app.use('/api/scanner', scannerRoutes);
 app.use('/api/expiration', expirationRoutes);
 app.use('/api/meals', mealRoutes);
 app.use('/api/grocery', groceryRoutes);
+app.get('/api/health', (req, res) => res.json({ ok: true }));
 app.use(errorHandler);
 
 module.exports = app;

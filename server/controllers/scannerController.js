@@ -9,7 +9,9 @@ const scanFoodLabel = async (req, res, next) => {
       name: 'Detected Item',
       brand: null,
       expirationDate: null,
-      imageUrl: `/uploads/${req.file.filename}`,
+      // Vercel functions do not provide durable local storage. Return no local image URL
+      // unless this is later replaced with object storage (Blob/S3/Cloudinary).
+      imageUrl: null,
       nutrition: {
         calories: null,
         protein: null,
