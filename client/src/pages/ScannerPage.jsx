@@ -5,6 +5,7 @@ import ScanResults from '../components/scanner/ScanResults';
 import BarcodeScanner from '../components/scanner/BarcodeScanner';
 import AddItemModal from '../components/fridge/AddItemModal';
 import { scannerService } from '../services/scannerService';
+import { barcodeService } from '../services/barcodeService';
 
 const TABS = ['Label Scan', 'Barcode Scan'];
 
@@ -15,23 +16,44 @@ export default function ScannerPage() {
   const [result, setResult] = useState(null);
   const [scanning, setScanning] = useState(false);
   const [error, setError] = useState('');
+  const [manualUpc, setManualUpc] = useState('');
   const [addModal, setAddModal] = useState(null);
 
   const handleFileSelect = (f) => {
     setFile(f);
     setResult(null);
     setError('');
+    setManualUpc('');
   };
 
   const handleScan = async () => {
     if (!file) return;
     setScanning(true);
     setError('');
+    setManualUpc('');
     try {
       const data = await scannerService.scanImage(file);
       setResult(data);
-    } catch {
-      setError('Scan failed. Please try a clearer image.');
+    } catch (err) {
+      setError(err.message || 'Scan failed. Please try a clearer image.');
+      if (err.upc) {
+        setManualUpc(err.upc);
+      }
+    } finally {
+      setScanning(false);
+    }
+  };
+
+  const handleManualLookup = async () => {
+    if (!manualUpc.trim()) return;
+    setScanning(true);
+    setError('');
+    try {
+      const data = await barcodeService.lookup(manualUpc.trim());
+      setResult(data);
+      setManualUpc('');
+    } catch (err) {
+      setError(err.message || 'Product not found. Try a different barcode.');
     } finally {
       setScanning(false);
     }
@@ -68,6 +90,23 @@ export default function ScannerPage() {
               </button>
             )}
             {error && <p className="scanner-error">{error}</p>}
+            {manualUpc && (
+              <div style={{ marginTop: '1rem' }}>
+                <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>Edit detected UPC and retry:</p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input
+                    type="text"
+                    className="barcode-input"
+                    style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}
+                    value={manualUpc}
+                    onChange={(e) => setManualUpc(e.target.value)}
+                  />
+                  <button className="btn btn-primary" onClick={handleManualLookup} disabled={scanning}>
+                    Retry
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="scanner-panel">
