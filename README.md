@@ -1,6 +1,6 @@
 # FridgeIQ
 
-FridgeIQ is a MERN stack web app that lets users track their fridge contents, monitor expiration dates, scan food labels, import items directly from grocery orders, and get meal suggestions based on what they have.
+FridgeIQ is a MERN app for tracking fridge items, expiration dates, scanned labels, grocery imports, and meal suggestions.
 
 ## Team Cool Cats - CIS4930
 
@@ -46,7 +46,7 @@ FridgeIQ/
     ├── middleware/            # JWT auth, error handler
     ├── models/               # User, Fridge, FridgeItem (Mongoose)
     ├── routes/               # Express routers
-    ├── services/             # grocerySimulator (swap for real API later)
+    ├── services/             # grocerySimulator
     └── utils/                # sendEmail (Nodemailer)
 ```
 
@@ -119,7 +119,7 @@ npm run dev
 
 ---
 
-### What is backed by MongoDB now
+### Current MongoDB-backed features
 
 - User accounts
 - Login sessions via JWT
@@ -157,10 +157,10 @@ EMAIL_FROM=noreply@fridgeiq.com
 
 ---
 
-## Integration Points (for teammates to build out)
+## Integration notes
 
-- **Food Scanner** (`server/controllers/scannerController.js`) - connect to a vision/nutrition API (Nutritionix, Open Food Facts, or Google Vision) and return real parsed data.
-- **Meal Planner** (`server/controllers/mealController.js`) - call a recipe API (Spoonacular or Edamam) with the user's ingredient list.
-- **Grocery Import** (`server/services/grocerySimulator.js`) - replace simulated orders with a real Instacart or store API once OAuth is set up.
-- **Expiration Emails** (`server/utils/sendEmail.js`) - configure Nodemailer and add a scheduled job (for example `node-cron`) to send daily digests.
-- **Shared Fridges** - model is ready (`Fridge.members`); needs UI + invite flow.
+- **Food Scanner** (`server/controllers/scannerController.js`) - uses Vision + UPC lookups.
+- **Meal Planner** (`server/controllers/mealController.js`) - uses Spoonacular based on fridge ingredients.
+- **Grocery Import** (`server/services/grocerySimulator.js`) - currently uses simulated order data.
+- **Expiration Emails** (`server/utils/sendEmail.js`) - sent with Nodemailer from the backend scheduler.
+- **Shared Fridges** - data model exists (`Fridge.members`), UI/invite flow still needed.

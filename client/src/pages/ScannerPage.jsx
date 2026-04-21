@@ -30,7 +30,7 @@ export default function ScannerPage() {
     if (!file) return;
     setScanning(true);
     setError('');
-    setManualUpc(''); // keep just in case logic needs it
+    setManualUpc('');
     try {
       const data = await scannerService.scanImage(file);
       setResult(data);

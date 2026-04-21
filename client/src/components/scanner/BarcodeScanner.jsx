@@ -25,7 +25,7 @@ export default function BarcodeScanner({ onAddToFridge }) {
       }
     } finally {
       setLoading(false);
-      e.target.value = null; // reset input
+      e.target.value = null;
     }
   };
 

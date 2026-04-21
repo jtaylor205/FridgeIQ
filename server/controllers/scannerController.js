@@ -20,15 +20,13 @@ const fetchAvocavoData = async (upc) => {
       if (errData.error === 'Product not found') {
         return null;
       }
-    } catch (e) {
-      // Ignore parse error and proceed to throw
-    }
+    } catch (e) {}
     throw new Error(`Failed to fetch from Avocavo API: ${errText}`);
   }
 
   const data = await response.json();
   if (!data.success || !data.product) {
-    return null; // Product not found
+    return null;
   }
 
   const p = data.product;
@@ -56,14 +54,11 @@ const fetchAvocavoData = async (upc) => {
 
 const extractUPCFromText = (text) => {
   if (!text) return null;
-  // A UPC is typically 12 digits, EAN is 13.
-  // We'll search for sequences of digits between 8 and 14 characters.
   const match = text.replace(/-/g, '').match(/\b\d{8,14}\b/);
   if (match) {
     return match[0];
   }
 
-  // Fallback: collect all digits and see if it looks like a barcode 
   const numericOnly = text.replace(/\D/g, '');
   if (numericOnly.length >= 8 && numericOnly.length <= 14) {
     return numericOnly;
@@ -84,7 +79,6 @@ const scanFoodLabel = async (req, res, next) => {
 
     const base64Image = req.file.buffer.toString('base64');
 
-    // Call Google Vision API for Text Detection
     const visionResponse = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${visionApiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -113,7 +107,6 @@ const scanFoodLabel = async (req, res, next) => {
 
     const detectedText = annotations[0].description;
 
-    // Extract the UPC string from the detected text
     const extractedUPC = extractUPCFromText(detectedText);
 
     if (!extractedUPC) {
@@ -122,7 +115,6 @@ const scanFoodLabel = async (req, res, next) => {
 
     console.log(`[scanFoodLabel] Successfully read UPC from image: ${extractedUPC}`);
 
-    // Pass the extracted UPC into the avocavo API
     const productResult = await fetchAvocavoData(extractedUPC);
 
     if (!productResult) {
@@ -160,7 +152,6 @@ const lookupUPC = async (req, res, next) => {
   } catch (err) {
     console.error('[lookupUPC] Internal Error:', err.message);
 
-    // Special handling for missing server settings rather than returning a 500 automatically
     if (err.message.includes('not configured')) {
       return res.status(500).json({ message: err.message });
     }
