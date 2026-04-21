@@ -14,3 +14,9 @@ module.exports = async (req, res) => {
   await dbPromise;
   return app(req, res);
 };
+
+module.exports.config = {
+  api: {
+    bodyParser: false,
+  },
+};
