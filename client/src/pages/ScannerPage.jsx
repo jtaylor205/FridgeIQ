@@ -30,15 +30,12 @@ export default function ScannerPage() {
     if (!file) return;
     setScanning(true);
     setError('');
-    setManualUpc('');
+    setManualUpc(''); // keep just in case logic needs it
     try {
       const data = await scannerService.scanImage(file);
       setResult(data);
     } catch (err) {
       setError(err.message || 'Scan failed. Please try a clearer image.');
-      if (err.upc) {
-        setManualUpc(err.upc);
-      }
     } finally {
       setScanning(false);
     }
@@ -90,23 +87,6 @@ export default function ScannerPage() {
               </button>
             )}
             {error && <p className="scanner-error">{error}</p>}
-            {manualUpc && (
-              <div style={{ marginTop: '1rem' }}>
-                <p style={{ fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 500 }}>Edit detected UPC and retry:</p>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input
-                    type="text"
-                    className="barcode-input"
-                    style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ddd' }}
-                    value={manualUpc}
-                    onChange={(e) => setManualUpc(e.target.value)}
-                  />
-                  <button className="btn btn-primary" onClick={handleManualLookup} disabled={scanning}>
-                    Retry
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
           <div className="scanner-panel">

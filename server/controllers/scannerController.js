@@ -168,4 +168,87 @@ const lookupUPC = async (req, res, next) => {
   }
 };
 
-module.exports = { scanFoodLabel, lookupUPC };
+const parseNutritionLabel = (text) => {
+  const getTextNum = (regex) => {
+    const match = text.match(regex);
+    return match ? parseFloat(match[1]) : null;
+  };
+
+  const calories = getTextNum(/Calories\s+(\d+)/i);
+  const totalFat = getTextNum(/Total\s*Fat\s*([\d.]+)/i);
+  const sodium = getTextNum(/Sodium\s*([\d.]+)/i);
+  const carbs = getTextNum(/(?:Total\s*)?Carbohydrate\s*([\d.]+)/i) || getTextNum(/Carbs\s*([\d.]+)/i);
+  const fiber = getTextNum(/(?:Dietary\s*)?Fiber\s*([\d.]+)/i);
+  const sugar = getTextNum(/(?:Total\s*)?Sugars?\s*([\d.]+)/i);
+  const protein = getTextNum(/Protein\s*([\d.]+)/i);
+
+  const servingMatch = text.match(/Serving\s*size\s*([^\n]+)/i);
+  const servingSize = servingMatch ? servingMatch[1].trim() : null;
+
+  return {
+    name: "Scanned Nutrition Label",
+    brand: null,
+    imageUrl: null,
+    nutrition: {
+      calories,
+      protein,
+      carbs,
+      fat: totalFat,
+      sugar,
+      fiber,
+      sodium,
+      servingSize
+    }
+  };
+};
+
+const scanNutritionLabel = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No image uploaded' });
+    }
+
+    const visionApiKey = process.env.GOOGLE_VISION_API_KEY;
+    if (!visionApiKey) {
+      return res.status(500).json({ message: 'Google Vision API key not configured' });
+    }
+
+    const base64Image = req.file.buffer.toString('base64');
+
+    const visionResponse = await fetch(`https://vision.googleapis.com/v1/images:annotate?key=${visionApiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        requests: [
+          {
+            image: { content: base64Image },
+            features: [{ type: 'TEXT_DETECTION' }]
+          }
+        ]
+      })
+    });
+
+    if (!visionResponse.ok) {
+      const errText = await visionResponse.text();
+      console.error('[scanNutritionLabel] Vision API Error:', errText);
+      return res.status(visionResponse.status).json({ message: 'Error processing image with Vision API' });
+    }
+
+    const visionData = await visionResponse.json();
+    const annotations = visionData.responses[0]?.textAnnotations;
+
+    if (!annotations || annotations.length === 0) {
+      return res.status(400).json({ message: 'No text found in the image' });
+    }
+
+    const detectedText = annotations[0].description;
+    const nutritionInfo = parseNutritionLabel(detectedText);
+
+    res.json(nutritionInfo);
+  } catch (err) {
+    console.error('[scanNutritionLabel] Internal Error:', err.message);
+    next(err);
+  }
+};
+
+module.exports = { scanFoodLabel, lookupUPC, scanNutritionLabel };

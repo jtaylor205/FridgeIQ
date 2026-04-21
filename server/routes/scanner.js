@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { scanFoodLabel, lookupUPC } = require('../controllers/scannerController');
+const { scanFoodLabel, lookupUPC, scanNutritionLabel } = require('../controllers/scannerController');
 const { protect } = require('../middleware/auth');
 
 const upload = multer({
@@ -22,6 +22,7 @@ const upload = multer({
 });
 
 router.post('/scan', protect, upload.single('image'), scanFoodLabel);
+router.post('/nutrition', protect, upload.single('image'), scanNutritionLabel);
 router.post('/upc', protect, lookupUPC);
 
 module.exports = router;
