@@ -2,6 +2,8 @@
 
 FridgeIQ is a MERN app for tracking fridge items, expiration dates, scanned labels, grocery imports, and meal suggestions.
 
+Live site: [fridge-iq-seven.vercel.app](https://fridge-iq-seven.vercel.app)
+
 ## Team Cool Cats - CIS4930
 
 | Name | Role |
